@@ -13,9 +13,9 @@ const storeController = new StoreController(client);
 ## Methods
 
 * [Place Order](../../doc/controllers/store.md#place-order)
+* [Get Inventory](../../doc/controllers/store.md#get-inventory)
 * [Get Order by Id](../../doc/controllers/store.md#get-order-by-id)
 * [Delete Order](../../doc/controllers/store.md#delete-order)
-* [Get Inventory](../../doc/controllers/store.md#get-inventory)
 
 
 # Place Order
@@ -62,6 +62,42 @@ try {
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 400 | Invalid Order | `ApiError` |
+
+
+# Get Inventory
+
+Returns a map of status codes to quantities
+
+```ts
+async getInventory(
+  requestOptions?: RequestOptions
+): Promise<ApiResponse<Record<string, number>>>
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `requestOptions` | `RequestOptions \| undefined` | Optional | Pass additional request options. |
+
+## Response Type
+
+`Record<string, number>`
+
+## Example Usage
+
+```ts
+try {
+  const { result, ...httpResponse } = await storeController.getInventory();
+  // Get more response info...
+  // const { statusCode, headers } = httpResponse;
+} catch (error) {
+  if (error instanceof ApiError) {
+    const errors = error.result;
+    // const { statusCode, headers } = error;
+  }
+}
+```
 
 
 # Get Order by Id
@@ -156,40 +192,4 @@ try {
 |  --- | --- | --- |
 | 400 | Invalid ID supplied | `ApiError` |
 | 404 | Order not found | `ApiError` |
-
-
-# Get Inventory
-
-Returns a map of status codes to quantities
-
-```ts
-async getInventory(
-  requestOptions?: RequestOptions
-): Promise<ApiResponse<Record<string, number>>>
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `requestOptions` | `RequestOptions \| undefined` | Optional | Pass additional request options. |
-
-## Response Type
-
-`Record<string, number>`
-
-## Example Usage
-
-```ts
-try {
-  const { result, ...httpResponse } = await storeController.getInventory();
-  // Get more response info...
-  // const { statusCode, headers } = httpResponse;
-} catch (error) {
-  if (error instanceof ApiError) {
-    const errors = error.result;
-    // const { statusCode, headers } = error;
-  }
-}
-```
 

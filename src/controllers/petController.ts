@@ -14,6 +14,24 @@ import { BaseController } from './baseController';
 
 export class PetController extends BaseController {
   /**
+   * Add a new pet to the store
+   *
+   * @param body         Pet object that needs to be added to the store
+   * @return Response from the API call
+   */
+  async inpet(
+    body: Pet,
+    requestOptions?: RequestOptions
+  ): Promise<ApiResponse<void>> {
+    const req = this.createRequest('POST', '/pet');
+    const mapped = req.prepareArgs({ body: [body, petSchema] });
+    req.header('Content-Type', 'application/json');
+    req.json(mapped.body);
+    req.throwOn(405, ApiError, 'Invalid input');
+    return req.call(requestOptions);
+  }
+
+  /**
    * uploads an image
    *
    * @param petId              ID of pet to update
@@ -38,24 +56,6 @@ export class PetController extends BaseController {
     });
     req.appendTemplatePath`/pet/${mapped.petId}/uploadImage`;
     return req.callAsJson(mApiResponseSchema, requestOptions);
-  }
-
-  /**
-   * Add a new pet to the store
-   *
-   * @param body         Pet object that needs to be added to the store
-   * @return Response from the API call
-   */
-  async inpet(
-    body: Pet,
-    requestOptions?: RequestOptions
-  ): Promise<ApiResponse<void>> {
-    const req = this.createRequest('POST', '/pet');
-    const mapped = req.prepareArgs({ body: [body, petSchema] });
-    req.header('Content-Type', 'application/json');
-    req.json(mapped.body);
-    req.throwOn(405, ApiError, 'Invalid input');
-    return req.call(requestOptions);
   }
 
   /**
@@ -135,6 +135,30 @@ export class PetController extends BaseController {
   }
 
   /**
+   * Deletes a pet
+   *
+   * @param petId   Pet id to delete
+   * @param apiKey
+   * @return Response from the API call
+   */
+  async deletePet(
+    petId: bigint,
+    apiKey?: string,
+    requestOptions?: RequestOptions
+  ): Promise<ApiResponse<void>> {
+    const req = this.createRequest('DELETE');
+    const mapped = req.prepareArgs({
+      petId: [petId, bigint()],
+      apiKey: [apiKey, optional(string())],
+    });
+    req.header('api_key', mapped.apiKey);
+    req.appendTemplatePath`/pet/${mapped.petId}`;
+    req.throwOn(400, ApiError, 'Invalid ID supplied');
+    req.throwOn(404, ApiError, 'Pet not found');
+    return req.call(requestOptions);
+  }
+
+  /**
    * Updates a pet in the store with form data
    *
    * @param petId        ID of pet that needs to be updated
@@ -161,30 +185,6 @@ export class PetController extends BaseController {
     });
     req.appendTemplatePath`/pet/${mapped.petId}`;
     req.throwOn(405, ApiError, 'Invalid input');
-    return req.call(requestOptions);
-  }
-
-  /**
-   * Deletes a pet
-   *
-   * @param petId   Pet id to delete
-   * @param apiKey
-   * @return Response from the API call
-   */
-  async deletePet(
-    petId: bigint,
-    apiKey?: string,
-    requestOptions?: RequestOptions
-  ): Promise<ApiResponse<void>> {
-    const req = this.createRequest('DELETE');
-    const mapped = req.prepareArgs({
-      petId: [petId, bigint()],
-      apiKey: [apiKey, optional(string())],
-    });
-    req.header('api_key', mapped.apiKey);
-    req.appendTemplatePath`/pet/${mapped.petId}`;
-    req.throwOn(400, ApiError, 'Invalid ID supplied');
-    req.throwOn(404, ApiError, 'Pet not found');
     return req.call(requestOptions);
   }
 }

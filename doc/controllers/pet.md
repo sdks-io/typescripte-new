@@ -14,58 +14,14 @@ const petController = new PetController(client);
 
 ## Methods
 
-* [Upload File](../../doc/controllers/pet.md#upload-file)
 * [Inpet](../../doc/controllers/pet.md#inpet)
+* [Upload File](../../doc/controllers/pet.md#upload-file)
 * [Update an Pet](../../doc/controllers/pet.md#update-an-pet)
 * [Find Pet in the Status](../../doc/controllers/pet.md#find-pet-in-the-status)
 * [Find Pets an Tags](../../doc/controllers/pet.md#find-pets-an-tags)
 * [Get Pet by Id](../../doc/controllers/pet.md#get-pet-by-id)
-* [Update Pet With Form](../../doc/controllers/pet.md#update-pet-with-form)
 * [Delete Pet](../../doc/controllers/pet.md#delete-pet)
-
-
-# Upload File
-
-uploads an image
-
-```ts
-async uploadFile(
-  petId: bigint,
-  additionalMetadata?: string,
-  file?: FileWrapper,
-  requestOptions?: RequestOptions
-): Promise<ApiResponse<MApiResponse>>
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `petId` | `bigint` | Template, Required | ID of pet to update |
-| `additionalMetadata` | `string \| undefined` | Form, Optional | Additional data to pass to server |
-| `file` | `FileWrapper \| undefined` | Form, Optional | file to upload |
-| `requestOptions` | `RequestOptions \| undefined` | Optional | Pass additional request options. |
-
-## Response Type
-
-[`MApiResponse`](../../doc/models/m-api-response.md)
-
-## Example Usage
-
-```ts
-const petId = BigInt(152);
-
-try {
-  const { result, ...httpResponse } = await petController.uploadFile(petId);
-  // Get more response info...
-  // const { statusCode, headers } = httpResponse;
-} catch (error) {
-  if (error instanceof ApiError) {
-    const errors = error.result;
-    // const { statusCode, headers } = error;
-  }
-}
-```
+* [Update Pet With Form](../../doc/controllers/pet.md#update-pet-with-form)
 
 
 # Inpet
@@ -117,6 +73,50 @@ try {
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 405 | Invalid input | `ApiError` |
+
+
+# Upload File
+
+uploads an image
+
+```ts
+async uploadFile(
+  petId: bigint,
+  additionalMetadata?: string,
+  file?: FileWrapper,
+  requestOptions?: RequestOptions
+): Promise<ApiResponse<MApiResponse>>
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `petId` | `bigint` | Template, Required | ID of pet to update |
+| `additionalMetadata` | `string \| undefined` | Form, Optional | Additional data to pass to server |
+| `file` | `FileWrapper \| undefined` | Form, Optional | file to upload |
+| `requestOptions` | `RequestOptions \| undefined` | Optional | Pass additional request options. |
+
+## Response Type
+
+[`MApiResponse`](../../doc/models/m-api-response.md)
+
+## Example Usage
+
+```ts
+const petId = BigInt(152);
+
+try {
+  const { result, ...httpResponse } = await petController.uploadFile(petId);
+  // Get more response info...
+  // const { statusCode, headers } = httpResponse;
+} catch (error) {
+  if (error instanceof ApiError) {
+    const errors = error.result;
+    // const { statusCode, headers } = error;
+  }
+}
+```
 
 
 # Update an Pet
@@ -320,6 +320,55 @@ try {
 | 404 | Pet not found | `ApiError` |
 
 
+# Delete Pet
+
+Deletes a pet
+
+```ts
+async deletePet(
+  petId: bigint,
+  apiKey?: string,
+  requestOptions?: RequestOptions
+): Promise<ApiResponse<void>>
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `petId` | `bigint` | Template, Required | Pet id to delete |
+| `apiKey` | `string \| undefined` | Header, Optional | - |
+| `requestOptions` | `RequestOptions \| undefined` | Optional | Pass additional request options. |
+
+## Response Type
+
+`void`
+
+## Example Usage
+
+```ts
+const petId = BigInt(152);
+
+try {
+  const { result, ...httpResponse } = await petController.deletePet(petId);
+  // Get more response info...
+  // const { statusCode, headers } = httpResponse;
+} catch (error) {
+  if (error instanceof ApiError) {
+    const errors = error.result;
+    // const { statusCode, headers } = error;
+  }
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Invalid ID supplied | `ApiError` |
+| 404 | Pet not found | `ApiError` |
+
+
 # Update Pet With Form
 
 Updates a pet in the store with form data
@@ -368,53 +417,4 @@ try {
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 405 | Invalid input | `ApiError` |
-
-
-# Delete Pet
-
-Deletes a pet
-
-```ts
-async deletePet(
-  petId: bigint,
-  apiKey?: string,
-  requestOptions?: RequestOptions
-): Promise<ApiResponse<void>>
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `petId` | `bigint` | Template, Required | Pet id to delete |
-| `apiKey` | `string \| undefined` | Header, Optional | - |
-| `requestOptions` | `RequestOptions \| undefined` | Optional | Pass additional request options. |
-
-## Response Type
-
-`void`
-
-## Example Usage
-
-```ts
-const petId = BigInt(152);
-
-try {
-  const { result, ...httpResponse } = await petController.deletePet(petId);
-  // Get more response info...
-  // const { statusCode, headers } = httpResponse;
-} catch (error) {
-  if (error instanceof ApiError) {
-    const errors = error.result;
-    // const { statusCode, headers } = error;
-  }
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Invalid ID supplied | `ApiError` |
-| 404 | Pet not found | `ApiError` |
 

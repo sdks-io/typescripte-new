@@ -15,11 +15,11 @@ const userController = new UserController(client);
 ## Methods
 
 * [Create Users With Array Input](../../doc/controllers/user.md#create-users-with-array-input)
-* [Create Users With List Input](../../doc/controllers/user.md#create-users-with-list-input)
 * [Get User by Name](../../doc/controllers/user.md#get-user-by-name)
-* [Update User](../../doc/controllers/user.md#update-user)
 * [Delete User](../../doc/controllers/user.md#delete-user)
 * [Login User](../../doc/controllers/user.md#login-user)
+* [Create Users With List Input](../../doc/controllers/user.md#create-users-with-list-input)
+* [Update User](../../doc/controllers/user.md#update-user)
 * [Logout User](../../doc/controllers/user.md#logout-user)
 * [Create User](../../doc/controllers/user.md#create-user)
 
@@ -55,54 +55,6 @@ const body: User[] = [
 
 try {
   const { result, ...httpResponse } = await userController.createUsersWithArrayInput(body);
-  // Get more response info...
-  // const { statusCode, headers } = httpResponse;
-} catch (error) {
-  if (error instanceof ApiError) {
-    const errors = error.result;
-    // const { statusCode, headers } = error;
-  }
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| Default | successful operation | `ApiError` |
-
-
-# Create Users With List Input
-
-Creates list of users with given input array
-
-```ts
-async createUsersWithListInput(
-  body: User[],
-  requestOptions?: RequestOptions
-): Promise<ApiResponse<void>>
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `body` | [`User[]`](../../doc/models/user.md) | Body, Required | List of user object |
-| `requestOptions` | `RequestOptions \| undefined` | Optional | Pass additional request options. |
-
-## Response Type
-
-`void`
-
-## Example Usage
-
-```ts
-const body: User[] = [
-  {}
-];
-
-try {
-  const { result, ...httpResponse } = await userController.createUsersWithListInput(body);
   // Get more response info...
   // const { statusCode, headers } = httpResponse;
 } catch (error) {
@@ -164,60 +116,6 @@ try {
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 400 | Invalid username supplied | `ApiError` |
-| 404 | User not found | `ApiError` |
-
-
-# Update User
-
-This can only be done by the logged in user.
-
-```ts
-async updateUser(
-  username: string,
-  body: User,
-  requestOptions?: RequestOptions
-): Promise<ApiResponse<void>>
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `username` | `string` | Template, Required | name that need to be updated |
-| `body` | [`User`](../../doc/models/user.md) | Body, Required | Updated user object |
-| `requestOptions` | `RequestOptions \| undefined` | Optional | Pass additional request options. |
-
-## Response Type
-
-`void`
-
-## Example Usage
-
-```ts
-const username = 'username0';
-
-const body: User = {};
-
-try {
-  const { result, ...httpResponse } = await userController.updateUser(
-    username,
-    body
-  );
-  // Get more response info...
-  // const { statusCode, headers } = httpResponse;
-} catch (error) {
-  if (error instanceof ApiError) {
-    const errors = error.result;
-    // const { statusCode, headers } = error;
-  }
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Invalid user supplied | `ApiError` |
 | 404 | User not found | `ApiError` |
 
 
@@ -319,6 +217,108 @@ try {
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 400 | Invalid username/password supplied | `ApiError` |
+
+
+# Create Users With List Input
+
+Creates list of users with given input array
+
+```ts
+async createUsersWithListInput(
+  body: User[],
+  requestOptions?: RequestOptions
+): Promise<ApiResponse<void>>
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`User[]`](../../doc/models/user.md) | Body, Required | List of user object |
+| `requestOptions` | `RequestOptions \| undefined` | Optional | Pass additional request options. |
+
+## Response Type
+
+`void`
+
+## Example Usage
+
+```ts
+const body: User[] = [
+  {}
+];
+
+try {
+  const { result, ...httpResponse } = await userController.createUsersWithListInput(body);
+  // Get more response info...
+  // const { statusCode, headers } = httpResponse;
+} catch (error) {
+  if (error instanceof ApiError) {
+    const errors = error.result;
+    // const { statusCode, headers } = error;
+  }
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| Default | successful operation | `ApiError` |
+
+
+# Update User
+
+This can only be done by the logged in user.
+
+```ts
+async updateUser(
+  username: string,
+  body: User,
+  requestOptions?: RequestOptions
+): Promise<ApiResponse<void>>
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `username` | `string` | Template, Required | name that need to be updated |
+| `body` | [`User`](../../doc/models/user.md) | Body, Required | Updated user object |
+| `requestOptions` | `RequestOptions \| undefined` | Optional | Pass additional request options. |
+
+## Response Type
+
+`void`
+
+## Example Usage
+
+```ts
+const username = 'username0';
+
+const body: User = {};
+
+try {
+  const { result, ...httpResponse } = await userController.updateUser(
+    username,
+    body
+  );
+  // Get more response info...
+  // const { statusCode, headers } = httpResponse;
+} catch (error) {
+  if (error instanceof ApiError) {
+    const errors = error.result;
+    // const { statusCode, headers } = error;
+  }
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Invalid user supplied | `ApiError` |
+| 404 | User not found | `ApiError` |
 
 
 # Logout User

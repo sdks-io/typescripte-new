@@ -30,24 +30,6 @@ export class UserController extends BaseController {
   }
 
   /**
-   * Creates list of users with given input array
-   *
-   * @param body         List of user object
-   * @return Response from the API call
-   */
-  async createUsersWithListInput(
-    body: User[],
-    requestOptions?: RequestOptions
-  ): Promise<ApiResponse<void>> {
-    const req = this.createRequest('POST', '/user/createWithList');
-    const mapped = req.prepareArgs({ body: [body, array(userSchema)] });
-    req.header('Content-Type', 'application/json');
-    req.json(mapped.body);
-    req.defaultToError(ApiError, 'successful operation');
-    return req.call(requestOptions);
-  }
-
-  /**
    * Get user by user name
    *
    * @param username The name that needs to be fetched. Use user1 for testing.
@@ -63,31 +45,6 @@ export class UserController extends BaseController {
     req.throwOn(400, ApiError, 'Invalid username supplied');
     req.throwOn(404, ApiError, 'User not found');
     return req.callAsJson(userSchema, requestOptions);
-  }
-
-  /**
-   * This can only be done by the logged in user.
-   *
-   * @param username     name that need to be updated
-   * @param body         Updated user object
-   * @return Response from the API call
-   */
-  async updateUser(
-    username: string,
-    body: User,
-    requestOptions?: RequestOptions
-  ): Promise<ApiResponse<void>> {
-    const req = this.createRequest('PUT');
-    const mapped = req.prepareArgs({
-      username: [username, string()],
-      body: [body, userSchema],
-    });
-    req.header('Content-Type', 'application/json');
-    req.json(mapped.body);
-    req.appendTemplatePath`/user/${mapped.username}`;
-    req.throwOn(400, ApiError, 'Invalid user supplied');
-    req.throwOn(404, ApiError, 'User not found');
-    return req.call(requestOptions);
   }
 
   /**
@@ -129,6 +86,49 @@ export class UserController extends BaseController {
     req.query('password', mapped.password);
     req.throwOn(400, ApiError, 'Invalid username/password supplied');
     return req.callAsText(requestOptions);
+  }
+
+  /**
+   * Creates list of users with given input array
+   *
+   * @param body         List of user object
+   * @return Response from the API call
+   */
+  async createUsersWithListInput(
+    body: User[],
+    requestOptions?: RequestOptions
+  ): Promise<ApiResponse<void>> {
+    const req = this.createRequest('POST', '/user/createWithList');
+    const mapped = req.prepareArgs({ body: [body, array(userSchema)] });
+    req.header('Content-Type', 'application/json');
+    req.json(mapped.body);
+    req.defaultToError(ApiError, 'successful operation');
+    return req.call(requestOptions);
+  }
+
+  /**
+   * This can only be done by the logged in user.
+   *
+   * @param username     name that need to be updated
+   * @param body         Updated user object
+   * @return Response from the API call
+   */
+  async updateUser(
+    username: string,
+    body: User,
+    requestOptions?: RequestOptions
+  ): Promise<ApiResponse<void>> {
+    const req = this.createRequest('PUT');
+    const mapped = req.prepareArgs({
+      username: [username, string()],
+      body: [body, userSchema],
+    });
+    req.header('Content-Type', 'application/json');
+    req.json(mapped.body);
+    req.appendTemplatePath`/user/${mapped.username}`;
+    req.throwOn(400, ApiError, 'Invalid user supplied');
+    req.throwOn(404, ApiError, 'User not found');
+    return req.call(requestOptions);
   }
 
   /**
